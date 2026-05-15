@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Day - Sobriety Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body { background-color: #0B132B; color: #FFFFFF; font-family: sans-serif; }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-between min-h-screen p-6">
+
+    <!-- Header -->
+    <header class="text-center mt-4">
+        <h1 class="text-3xl font-bold tracking-wide text-cyan-400">ONE DAY</h1>
+        <p class="text-xs text-gray-400 mt-1">One day at a time.</p>
+    </header>
+
+    <!-- Main Counter Dashboard -->
+    <main class="w-full max-w-sm bg-[#1C2541] rounded-2xl p-6 shadow-xl text-center my-auto">
+        <p class="text-sm text-gray-300 uppercase tracking-wider mb-2">Sober for</p>
+        
+        <!-- Days Counter -->
+        <div id="days" class="text-7xl font-extrabold text-white my-2">0</div>
+        <p class="text-md text-cyan-400 font-semibold mb-6">DAYS</p>
+
+        <!-- Detailed Time Breakdown -->
+        <div class="grid grid-cols-3 gap-2 bg-[#0B132B] p-3 rounded-xl text-sm">
+            <div>
+                <span id="hours" class="block text-lg font-bold">0</span>
+                <span class="text-xs text-gray-400">Hours</span>
+            </div>
+            <div>
+                <span id="minutes" class="block text-lg font-bold">0</span>
+                <span class="text-xs text-gray-400">Mins</span>
+            </div>
+            <div>
+                <span id="seconds" class="block text-lg font-bold">0</span>
+                <span class="text-xs text-gray-400">Secs</span>
+            </div>
+        </div>
+    </main>
+
+    <!-- Interactive Section (Daily Check-in & Emergency) -->
+    <footer class="w-full max-w-sm space-y-4 mb-4">
+        <!-- Daily Check-In Box -->
+        <div class="bg-[#1C2541] p-4 rounded-xl text-center">
+            <p class="text-sm font-medium mb-2">How are you feeling right now?</p>
+            <div class="flex justify-center space-x-4 text-2xl">
+                <button onclick="logMood('😊')" class="hover:scale-125 transition">😊</button>
+                <button onclick="logMood('😐')" class="hover:scale-125 transition">😐</button>
+                <button onclick="logMood('😔')" class="hover:scale-125 transition">😔</button>
+                <button onclick="logMood('⚠️')" class="hover:scale-125 transition">⚠️</button>
+            </div>
+            <p id="mood-status" class="text-xs text-gray-400 mt-2"></p>
+        </div>
+
+        <!-- Emergency Trigger Button -->
+        <button onclick="triggerEmergency()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg transition uppercase tracking-wider text-sm">
+            🚨 Cravings Hit / Need Support
+        </button>
+    </footer>
+
+    <!-- Script to run the logic -->
+    <script>
+        // Set your sobriety start date here (Year, Month-1, Day, Hour, Minute)
+        // May 1, 2026 at 12:00 PM
+        const sobrietyStartDate = new Date(2026, 4, 1, 12, 0, 0); 
+
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - sobrietyStartDate;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('days').innerText = days;
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+            document.getElementById('seconds').innerText = seconds;
+        }
+
+        function logMood(emoji) {
+            localStorage.setItem('todayMood', emoji);
+            document.getElementById('mood-status').innerText = "Mood saved. Stay strong!";
+        }
+
+        function triggerEmergency() {
+            alert("Take a deep breath. Inhale for 4 seconds, hold for 4, exhale for 4. You are stronger than the craving. If you need immediate help, call SAMHSA at 1-800-662-4357.");
+        }
+
+        // Run timer instantly and update every second
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
